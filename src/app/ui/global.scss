@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "login.scss";
+
 // :root {
 //   --foreground-rgb: 0, 0, 0;
 //   --background-start-rgb: 214, 219, 220;
@@ -30,4 +32,20 @@
 ::after,
 ::before {
   box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dark\:bg-clouds {
+    background-image: url("/images/dark:clouds.png");
+  }
 }

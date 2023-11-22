@@ -1,79 +1,121 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import PageWrapper from "../ui/PageWrapper";
+
 export default function Page() {
+  const [isAnimated, setIsAnimated] = useState(false);
+  const router = useRouter();
+
   return (
-    <section className="dark:border-gray-800">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-extrabold text-white sm:text-4xl">
-            Sign in to your account
-          </h1>
-          <p className="mt-6 text-lg text-gray-300">
-            Or{" "}
-            <a href="#" className="font-medium text-white hover:text-gray-400">
-              start your 14-day free trial
-            </a>
-          </p>
-        </div>
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" action="#" method="POST">
+    <PageWrapper>
+      <>
+        <Image
+          className={`plane ${isAnimated ? "animated-plane" : ""}`}
+          src={isAnimated ? "/plane-animated.webp" : "/plane.webp"}
+          alt="Avión volando"
+          width={630}
+          height={540.5}
+          onTransitionEnd={(e) => {
+            e.currentTarget.style.display = "none";
+            router.push("/");
+          }}
+        />
+        <Image
+          className="clouds"
+          src="/cloud0.webp"
+          alt="Nube"
+          width={1920}
+          height={1080}
+        />
+        <div className="z-[1]  w-full bg-white bg-opacity-95 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:bg-opacity-95 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Inicia sesión en tu cuenta
+            </h1>
+            <form className="space-y-4 md:space-y-6" action="#">
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Email address
-                </label>
-                <div className="mt-1">
+                  Correo electrónico
                   <input
-                    id="email"
-                    name="email"
                     type="email"
-                    autoComplete="email"
-                    required
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    name="email"
+                    id="email"
+                    className="mt-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="name@company.com"
+                    required={true}
                   />
-                </div>
+                </label>
               </div>
-
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Password
+                  Contraseña
                 </label>
-                <div className="mt-1">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                  />
-                </div>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="••••••••"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required={true}
+                />
               </div>
-
               <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember_me"
-                    name="remember_me"
-                    type="checkbox"
-                    className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                  />
-                  <label
-                    htmlFor="remember_me"
-                    className="ml-2 block text-sm text-gray-900"
-                  >
-                    Remember me
-                  </label>
+                <div className="flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="remember"
+                      aria-describedby="remember"
+                      type="checkbox"
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      required={true}
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label
+                      htmlFor="remember"
+                      className="text-gray-500 dark:text-gray-300"
+                    >
+                      Recordar contraseña
+                    </label>
+                  </div>
                 </div>
+                <Link
+                  href="#"
+                  className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  ¿Olvidaste tu contraseña?
+                </Link>
               </div>
+              <button
+                type="submit"
+                onClick={() => setIsAnimated(true)}
+                className="transition-all w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              >
+                Iniciar sesión
+              </button>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                ¿No tienes una cuenta?{" "}
+                <Link
+                  href="/register"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  Regístrate
+                </Link>
+              </p>
             </form>
           </div>
         </div>
-      </div>
-    </section>
+      </>
+    </PageWrapper>
   );
 }
