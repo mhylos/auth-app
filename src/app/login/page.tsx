@@ -35,11 +35,11 @@ export default function Page() {
     });
   };
 
-  // useEffect(() => {
-  //   if (!response.isLoading) {
-  //     console.log(response);
-  //   }
-  // }, [response]);
+  useEffect(() => {
+    if (response.data && 'name' in response.data) {
+      localStorage.setItem('name', response.data.name);
+    }
+  }, [response]);
 
   useEffect(() => {
     if (response.hasError) {
@@ -79,7 +79,6 @@ export default function Page() {
           onTransitionEnd={e => {
             if (response.data) {
               e.currentTarget.style.display = 'none';
-              localStorage.setItem('name', (response.data as UserType).name);
               router.push('/');
             }
           }}

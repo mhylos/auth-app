@@ -58,13 +58,16 @@ export default function Page() {
       if (busImage === 'bus_waiting') {
         setBusImage('bus_going');
         setTimeout(() => {
-          localStorage.setItem('name', name);
           router.push('/');
         }, 2000);
         return;
       }
     }
   }, [response.isSuccess, router, busImage]);
+
+  useEffect(() => {
+    localStorage.setItem('name', name);
+  }, [name]);
 
   return (
     <PageWrapper>
