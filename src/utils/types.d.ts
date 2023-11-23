@@ -4,6 +4,11 @@ export interface IUseAxios {
   data?: any;
 }
 
+export type UserType = {
+  name: string;
+  email: string;
+};
+
 export type MessageResponseType = {
   message: string;
 };

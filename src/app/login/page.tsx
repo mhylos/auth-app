@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { IoCheckmark, IoCloseOutline } from 'react-icons/io5';
 
-import { MessageResponseType } from '@/utils/types';
+import { MessageResponseType, UserType } from '@/utils/types';
 import { PageWrapper, CustomInput } from '@/app/ui/components';
 import { useLazyAxios } from '@/hooks';
 
@@ -19,7 +19,9 @@ export default function Page() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [login, response, reset] = useLazyAxios<MessageResponseType>();
+  const [login, response, reset] = useLazyAxios<
+    MessageResponseType | UserType
+  >();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,11 +35,11 @@ export default function Page() {
     });
   };
 
-  useEffect(() => {
-    if (!response.isLoading) {
-      console.log(response);
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (!response.isLoading) {
+  //     console.log(response);
+  //   }
+  // }, [response]);
 
   useEffect(() => {
     if (response.hasError) {
@@ -77,6 +79,7 @@ export default function Page() {
           onTransitionEnd={e => {
             if (response.data) {
               e.currentTarget.style.display = 'none';
+              localStorage.setItem('name', (response.data as UserType).name);
               router.push('/');
             }
           }}
