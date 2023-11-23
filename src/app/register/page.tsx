@@ -1,148 +1,209 @@
-import Link from "next/link";
+'use client';
+
+import { useEffect, useState } from 'react';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+import { IoCheckmark, IoCloseOutline } from 'react-icons/io5';
+import { PulseLoader } from 'react-spinners';
+
+import { CustomInput, PageWrapper } from '@/app/ui/components';
+import { MessageResponseType } from '@/utils/types';
+import { useLazyAxios } from '@/hooks';
 
 export default function Page() {
+  const router = useRouter();
+
+  const [busImage, setBusImage] = useState('bus_coming');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [useRegister, response, reset] = useLazyAxios<MessageResponseType>();
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (password !== confirmPassword) return;
+    useRegister({
+      url: '/register',
+      method: 'post',
+      data: {
+        name,
+        email,
+        password,
+      },
+    });
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (busImage === 'bus_coming') {
+        setBusImage('bus_waiting');
+        return;
+      }
+    }, 1650);
+  }, [busImage]);
+
+  useEffect(() => {
+    if (response.hasError) {
+      reset();
+    }
+  }, [name, email, password, confirmPassword]);
+
+  useEffect(() => {
+    if (response.isSuccess) {
+      if (busImage === 'bus_waiting') {
+        setBusImage('bus_going');
+        setTimeout(() => {
+          router.push('/');
+        }, 2000);
+        return;
+        // router.push('/login');
+      }
+    }
+  }, [response.isSuccess]);
+
   return (
-    <main className="flex flex-col items-center justify-center h-full px-6 py-8 lg:py-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-[#549abc] via-[#1076ad] via-30% to-[#02163f]">
-      <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-        <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-          <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-            Crea una cuenta
-          </h1>
-          <form className="space-y-4 md:space-y-6" action="#">
-            <div>
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Tu correo electrónico
-              </label>
-              <input
-                type="email"
-                name="email"
+    <PageWrapper>
+      <>
+        <div className="absolute top-0 left-0 w-full h-full z-[1]">
+          <Image
+            src="/register_bg.webp"
+            className="absolute top-0 left-0 "
+            alt="bg"
+            layout="fill"
+          />
+          <Image
+            src={`/bus_coming.webp`}
+            className="absolute bottom-0 left-0 "
+            alt="bg"
+            layout="fill"
+            style={{
+              opacity: busImage === 'bus_coming' ? 1 : 0,
+              visibility: busImage === 'bus_coming' ? 'visible' : 'hidden',
+            }}
+          />
+          <Image
+            src={`/bus_waiting.webp`}
+            className="absolute bottom-0 left-0 "
+            alt="bg"
+            layout="fill"
+            style={{
+              opacity: busImage === 'bus_waiting' ? 1 : 0,
+              visibility: busImage === 'bus_waiting' ? 'visible' : 'hidden',
+            }}
+          />
+          <Image
+            src={`/bus_going.webp`}
+            className="absolute bottom-0 left-0 "
+            alt="bg"
+            layout="fill"
+            style={{
+              opacity: busImage === 'bus_going' ? 1 : 0,
+              visibility: busImage === 'bus_going' ? 'visible' : 'hidden',
+            }}
+          />
+        </div>
+        <div className="z-[2] w-full bg-white bg-opacity-95 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:bg-opacity-95 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Crea una cuenta
+            </h1>
+            <form
+              className="space-y-4 md:space-y-6 flex flex-col items-center"
+              onSubmit={onSubmit}
+            >
+              <CustomInput
+                id="name"
+                label="Tu nombre"
+                type="name"
+                placeholder="John Doe"
+                required={true}
+                onChange={e => setName(e.target.value)}
+              />
+              <CustomInput
                 id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                label="Tu correo electrónico"
+                type="email"
                 placeholder="name@company.com"
                 required={true}
+                onChange={e => setEmail(e.target.value)}
               />
-            </div>
-            <div>
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Contraseña
-              </label>
-              <input
-                type="password"
-                name="password"
+              <CustomInput
                 id="password"
-                placeholder="••••••••"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required={true}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="confirm-password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Confirmar contraseña
-              </label>
-              <input
+                label="Contraseña"
                 type="password"
-                name="confirm-password"
-                id="confirm-password"
                 placeholder="••••••••"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required={true}
+                onChange={e => setPassword(e.target.value)}
               />
-            </div>
-            <div>
-              <label
-                htmlFor="birthday"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Fecha de nacimiento
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                <select
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required={true}
-                  defaultValue="Día"
-                >
-                  {Array.from(Array(32).keys()).map((day) => (
-                    <option key={`day-${day}`}>
-                      {day === 0 ? "Día" : day}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required={true}
-                  defaultValue="Mes"
-                >
-                  {Array.from(Array(12).keys()).map((month) => (
-                    <option key={`month-${month}`}>
-                      {month === 0 ? "Mes" : month}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required={true}
-                  defaultValue="Año"
-                >
-                  {Array.from(Array(2021 - 1950).keys()).map((year) => (
-                    <option key={`year-${year}`}>
-                      {year === 0 ? "Año" : year + 1950}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="flex items-start">
-              <div className="flex items-center h-5">
-                <input
-                  id="terms"
-                  aria-describedby="terms"
-                  type="checkbox"
-                  className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                  required={true}
-                />
-              </div>
-              <div className="ml-3 text-sm">
-                <label
-                  htmlFor="terms"
-                  className="font-light text-gray-500 dark:text-gray-300"
-                >
-                  Acepto los{" "}
-                  <Link
-                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                    href="#"
+              <CustomInput
+                id="confirm-password"
+                label="Confirmar Contraseña"
+                type="password"
+                placeholder="••••••••"
+                required={true}
+                onChange={e => setConfirmPassword(e.target.value)}
+              />
+              <div className="w-full flex items-start">
+                <div className="flex items-center h-5">
+                  <input
+                    id="terms"
+                    aria-describedby="terms"
+                    type="checkbox"
+                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                    required={true}
+                  />
+                </div>
+                <div className="ml-3 text-sm">
+                  <label
+                    htmlFor="terms"
+                    className="font-light text-gray-500 dark:text-gray-300"
                   >
-                    términos y condiciones
-                  </Link>
-                </label>
+                    Acepto los{' '}
+                    <Link
+                      className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                      href="#"
+                    >
+                      términos y condiciones
+                    </Link>
+                  </label>
+                </div>
               </div>
-            </div>
-            <button
-              type="submit"
-              className="transition-all w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            >
-              Crear cuenta
-            </button>
-            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-              ¿Ya tienes una cuenta?{" "}
-              <Link
-                href="/login"
-                className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+              <button
+                type="submit"
+                disabled={response.isLoading}
+                className={`relative overflow-hidden transition-all duration-500 w-full aspect-[12/2] ease-in-out p-2.5 text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm  text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 
+                btn
+                ${response.isLoading && 'isLoading'} 
+                ${response.isSuccess && 'isSuccess'} 
+                ${response.hasError && 'hasError'}`}
               >
-                Inicia sesión
-              </Link>
-            </p>
-          </form>
+                {!(
+                  response.isLoading ||
+                  response.isSuccess ||
+                  response.hasError
+                ) && 'Crear cuenta'}
+                {response.isLoading && <PulseLoader className="pulseLoader" />}
+                {response.isSuccess && <IoCheckmark className="icon" />}
+                {response.hasError && <IoCloseOutline className="icon" />}
+              </button>
+              <p className="w-full text-sm font-light text-gray-500 dark:text-gray-400">
+                ¿Ya tienes una cuenta?{' '}
+                <Link
+                  href="/login"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  Inicia sesión
+                </Link>
+              </p>
+            </form>
+          </div>
         </div>
-      </div>
-    </main>
+      </>
+    </PageWrapper>
   );
 }

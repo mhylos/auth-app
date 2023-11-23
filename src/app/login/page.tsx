@@ -1,75 +1,113 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import PageWrapper from "../ui/PageWrapper";
+import { useEffect, useState } from 'react';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+import PulseLoader from 'react-spinners/PulseLoader';
+import { IoCheckmark, IoCloseOutline } from 'react-icons/io5';
+
+import { MessageResponseType } from '@/utils/types';
+import { PageWrapper, CustomInput } from '@/app/ui/components';
+import { useLazyAxios } from '@/hooks';
 
 export default function Page() {
-  const [isAnimated, setIsAnimated] = useState(false);
   const router = useRouter();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [useLogin, response, reset] = useLazyAxios<MessageResponseType>();
+
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    useLogin({
+      url: '/login',
+      method: 'post',
+      data: {
+        email,
+        password,
+      },
+    });
+  }
+
+  useEffect(() => {
+    if (!response.isLoading) {
+      console.log(response);
+    }
+  }, [response.isLoading]);
+
+  useEffect(() => {
+    if (response.hasError) {
+      reset();
+    }
+  }, [email, password]);
 
   return (
     <PageWrapper>
       <>
+        <div className="clouds">
+          <Image
+            className="clouds_left"
+            src="/cloud0.webp"
+            alt="Nube"
+            width={1920}
+            height={1080}
+          />
+          <Image
+            className="clouds_right"
+            src="/cloud1.webp"
+            alt="Nube"
+            width={1920}
+            height={1080}
+            onAnimationEnd={e => {
+              e.currentTarget.style.animation =
+                'cloudBehind 60s infinite linear';
+            }}
+          />
+        </div>
         <Image
-          className={`plane ${isAnimated ? "animated-plane" : ""}`}
-          src={isAnimated ? "/plane-animated.webp" : "/plane.webp"}
+          className={`plane ${response.data ? 'animated-plane' : ''}`}
+          src={response.data ? '/plane-animated.webp' : '/plane.webp'}
           alt="Avión volando"
           width={630}
           height={540.5}
-          onTransitionEnd={(e) => {
-            e.currentTarget.style.display = "none";
-            router.push("/");
+          onTransitionEnd={e => {
+            if (response.data) {
+              e.currentTarget.style.display = 'none';
+              router.push('/');
+            }
           }}
         />
-        <Image
-          className="clouds"
-          src="/cloud0.webp"
-          alt="Nube"
-          width={1920}
-          height={1080}
-        />
+
         <div className="z-[1]  w-full bg-white bg-opacity-95 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:bg-opacity-95 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Inicia sesión en tu cuenta
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Correo electrónico
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="mt-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="name@company.com"
-                    required={true}
-                  />
-                </label>
-              </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Contraseña
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required={true}
-                />
-              </div>
-              <div className="flex items-center justify-between">
+            <form
+              className="space-y-4 md:space-y-6 flex flex-col items-center"
+              onSubmit={onSubmit}
+            >
+              <CustomInput
+                id="email"
+                label="Tu correo electrónico"
+                type="email"
+                placeholder="name@company.com"
+                required={true}
+                onChange={e => setEmail(e.target.value)}
+              />
+              <CustomInput
+                id="password"
+                label="Contraseña"
+                type="password"
+                placeholder="••••••••"
+                required={true}
+                onChange={e => setPassword(e.target.value)}
+              />
+              <div className="w-full flex items-center justify-between">
                 <div className="flex items-start">
                   <div className="flex items-center h-5">
                     <input
@@ -77,7 +115,7 @@ export default function Page() {
                       aria-describedby="remember"
                       type="checkbox"
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                      required={true}
+                      required={false}
                     />
                   </div>
                   <div className="ml-3 text-sm">
@@ -98,13 +136,24 @@ export default function Page() {
               </div>
               <button
                 type="submit"
-                onClick={() => setIsAnimated(true)}
-                className="transition-all w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                disabled={response.isLoading}
+                className={`relative overflow-hidden transition-all duration-500 w-full aspect-[12/2] ease-in-out p-2.5 text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm  text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 
+                btn
+                ${response.isLoading && 'isLoading'} 
+                ${response.isSuccess && 'isSuccess'} 
+                ${response.hasError && 'hasError'}`}
               >
-                Iniciar sesión
+                {!(
+                  response.isLoading ||
+                  response.isSuccess ||
+                  response.hasError
+                ) && 'Iniciar sesión'}
+                {response.isLoading && <PulseLoader className="pulseLoader" />}
+                {response.isSuccess && <IoCheckmark className="icon" />}
+                {response.hasError && <IoCloseOutline className="icon" />}
               </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                ¿No tienes una cuenta?{" "}
+              <p className="w-full text-sm font-light text-gray-500 dark:text-gray-400">
+                ¿No tienes una cuenta?{' '}
                 <Link
                   href="/register"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"

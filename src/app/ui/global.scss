@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "login.scss";
+@import 'login/login.scss';
 
 // :root {
 //   --foreground-rgb: 0, 0, 0;
@@ -35,7 +35,7 @@
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 16px;
   line-height: 1.5;
   margin: 0;
@@ -44,8 +44,49 @@ body {
   height: 100vh;
 }
 
-@media (prefers-color-scheme: dark) {
-  .dark\:bg-clouds {
-    background-image: url("/images/dark:clouds.png");
+.pulseLoader {
+  display: flex !important;
+  align-items: center !important;
+  margin: auto !important;
+  width: max-content !important;
+  span {
+    background-color: white !important ;
   }
+}
+
+.icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.btn {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // text-overflow: ellipsis;
+  text-wrap: nowrap;
+}
+
+.isLoading {
+  pointer-events: none;
+  width: 25%;
+}
+
+.isSuccess {
+  background-color: rgb(22 163 74) !important;
+}
+
+.hasError {
+  background-color: rgb(220 38 38) !important;
+}
+
+.isSuccess,
+.hasError {
+  pointer-events: none;
+  width: 34px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
 }

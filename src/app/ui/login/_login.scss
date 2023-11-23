@@ -1,0 +1,61 @@
+$animation-speed: 60s;
+
+.plane {
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  transform: translate(-105%, -115%);
+  transition: transform 1.2s ease-in-out;
+}
+
+.animated-plane {
+  transform: translate(-105%, -115%) scale(2);
+}
+
+.clouds {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.clouds_left,
+.clouds_right {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  margin-block: auto;
+  animation: cloudMove calc($animation-speed/2) forwards linear;
+}
+
+.clouds_left {
+  left: -100%;
+  animation: cloudBehind $animation-speed infinite linear;
+}
+
+@keyframes cloudMove {
+  0% {
+    left: 0%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes cloudBehind {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
