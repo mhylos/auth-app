@@ -37,13 +37,13 @@ export default function Page() {
     if (!response.isLoading) {
       console.log(response);
     }
-  }, [response.isLoading]);
+  }, [response]);
 
   useEffect(() => {
     if (response.hasError) {
       reset();
     }
-  }, [email, password]);
+  }, [email, password, response, reset]);
 
   return (
     <PageWrapper>

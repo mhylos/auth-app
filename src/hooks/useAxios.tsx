@@ -47,7 +47,7 @@ export default function useAxios<R>(request: IUseAxios): responseType<R> {
           };
         });
       });
-  }, [response.reFetch]);
+  }, [response.reFetch, request, response.isLoading]);
 
   return response;
 }

@@ -51,7 +51,7 @@ export default function Page() {
     if (response.hasError) {
       reset();
     }
-  }, [name, email, password, confirmPassword]);
+  }, [name, email, password, confirmPassword, response, reset]);
 
   useEffect(() => {
     if (response.isSuccess) {
@@ -64,7 +64,7 @@ export default function Page() {
         // router.push('/login');
       }
     }
-  }, [response.isSuccess]);
+  }, [response.isSuccess, router, busImage]);
 
   return (
     <PageWrapper>
@@ -85,6 +85,7 @@ export default function Page() {
               opacity: busImage === 'bus_coming' ? 1 : 0,
               visibility: busImage === 'bus_coming' ? 'visible' : 'hidden',
             }}
+            quality={100}
           />
           <Image
             src={`/bus_waiting.webp`}
@@ -95,6 +96,7 @@ export default function Page() {
               opacity: busImage === 'bus_waiting' ? 1 : 0,
               visibility: busImage === 'bus_waiting' ? 'visible' : 'hidden',
             }}
+            quality={100}
           />
           <Image
             src={`/bus_going.webp`}
@@ -105,6 +107,7 @@ export default function Page() {
               opacity: busImage === 'bus_going' ? 1 : 0,
               visibility: busImage === 'bus_going' ? 'visible' : 'hidden',
             }}
+            quality={100}
           />
         </div>
         <div className="z-[2] w-full bg-white bg-opacity-95 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:bg-opacity-95 dark:border-gray-700">
