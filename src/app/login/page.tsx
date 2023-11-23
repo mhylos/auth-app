@@ -19,11 +19,11 @@ export default function Page() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [useLogin, response, reset] = useLazyAxios<MessageResponseType>();
+  const [login, response, reset] = useLazyAxios<MessageResponseType>();
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    useLogin({
+    login({
       url: '/login',
       method: 'post',
       data: {
@@ -31,7 +31,7 @@ export default function Page() {
         password,
       },
     });
-  }
+  };
 
   useEffect(() => {
     if (!response.isLoading) {

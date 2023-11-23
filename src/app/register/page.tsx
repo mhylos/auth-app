@@ -22,12 +22,12 @@ export default function Page() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [useRegister, response, reset] = useLazyAxios<MessageResponseType>();
+  const [register, response, reset] = useLazyAxios<MessageResponseType>();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirmPassword) return;
-    useRegister({
+    register({
       url: '/register',
       method: 'post',
       data: {
