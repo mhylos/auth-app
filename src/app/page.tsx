@@ -1,11 +1,16 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 // import { PulseLoader } from 'react-spinners';
 
 // import { useAxios } from '@/hooks';
 
 export default function Page() {
-  const name = localStorage.getItem('name');
+  const [name, setName] = useState<string | null>(null);
+  useEffect(() => {
+    setName(localStorage.getItem('name'));
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
