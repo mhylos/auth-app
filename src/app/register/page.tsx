@@ -51,7 +51,7 @@ export default function Page() {
     if (response.hasError) {
       reset();
     }
-  }, [name, email, password, confirmPassword, response, reset]);
+  }, [name, email, password, confirmPassword]);
 
   useEffect(() => {
     if (response.isSuccess) {
@@ -61,7 +61,6 @@ export default function Page() {
           router.push('/');
         }, 2000);
         return;
-        // router.push('/login');
       }
     }
   }, [response.isSuccess, router, busImage]);
