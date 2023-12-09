@@ -1,23 +1,23 @@
 export interface IUseAxios {
-  url: string;
-  method: 'get' | 'post' | 'put' | 'delete';
-  data?: any;
+	url: string;
+	method: 'get' | 'post' | 'put' | 'delete';
+	data?: any;
 }
 
 export type UserType = {
-  name: string;
-  email: string;
+	name: string;
+	email: string;
 };
 
 export type MessageResponseType = {
-  message: string;
+	message: string;
 };
 
 export type responseType<R> = {
-  data?: R | MessageResponseType;
-  errorMessage: string;
-  hasError: boolean;
-  isLoading: boolean;
-  isSuccess: boolean;
-  reFetch: [any, DispatchWithoutAction];
+	data?: R | MessageResponseType;
+	errorMessage: string;
+	hasError: boolean;
+	isLoading: boolean;
+	isSuccess: boolean;
+	reFetch: [any, DispatchWithoutAction];
 };

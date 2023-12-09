@@ -130,7 +130,7 @@ export default function Page() {
                   </div>
                 </div>
                 <Link
-                  href="#"
+                  href="/recover"
                   className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   ¿Olvidaste tu contraseña?
