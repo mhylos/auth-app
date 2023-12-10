@@ -9,12 +9,12 @@ export type UserType = {
 	email: string;
 };
 
-export type MessageResponseType = {
-	message: string;
-};
+// export type MessageResponseType = {
+// 	message: string;
+// };
 
 export type responseType<R> = {
-	data?: R | MessageResponseType;
+	data?: R;
 	errorMessage: string;
 	hasError: boolean;
 	isLoading: boolean;
