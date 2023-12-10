@@ -6,6 +6,7 @@ import RecoverForm from '@/app/ui/register/RecoverForm';
 import { useState } from 'react';
 
 export default function Page() {
+	const [email, setEmail] = useState('');
 	const [recoverToken, setRecoverToken] = useState<string>();
 
 	return (
@@ -16,7 +17,11 @@ export default function Page() {
 						Recuperar contraseña
 					</h1>
 					{!recoverToken ? (
-						<RecoverForm setToken={setRecoverToken} />
+						<RecoverForm
+							setToken={setRecoverToken}
+							email={email}
+							setEmail={setEmail}
+						/>
 					) : (
 						<PageWrapper className=''>
 							<ChangePassword />

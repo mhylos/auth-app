@@ -1,16 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { ClipboardEvent, useRef } from 'react';
 
 interface VerificationInputProps {
 	emailSent: boolean;
 	timer: number;
-	setTimer: (timer: number) => void;
+	sendEmail: () => void;
 	setCode: (code: string[]) => void;
 }
 
 export default function VerificationInput({
 	emailSent,
 	timer,
-	setTimer,
+	sendEmail,
 	setCode,
 }: VerificationInputProps) {
 	const codeRef = useRef<HTMLInputElement[]>([]);
@@ -19,6 +19,17 @@ export default function VerificationInput({
 	const forwardKeys = ['ArrowRight', 'Tab'];
 	const enabledClasses =
 		'bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 w-fit justify-self-end';
+
+	const splitOnCopy = (e: ClipboardEvent<HTMLInputElement>) => {
+		const clipboard = e.clipboardData as DataTransfer;
+		const data = clipboard.getData('text/plain');
+		const newArray = data.trim().split('');
+		codeRef.current.forEach((el, i) => {
+			el.value = newArray[i] || '';
+		});
+		setCode(newArray);
+		e.preventDefault();
+	};
 
 	if (!emailSent) {
 		return (
@@ -42,10 +53,12 @@ export default function VerificationInput({
 						key={i}
 						ref={el => (codeRef.current[i] = el!)}
 						type='text'
+						value={codeRef.current[i]?.value.toUpperCase() || ''}
 						maxLength={1}
+						onPaste={splitOnCopy}
 						className='w-10 h-10 text-center text-2xl border border-gray-300 rounded-lg focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600'
-						onChange={e => {
-							setCode([...codeRef.current.map(el => el.value)]);
+						onChange={() => {
+							setCode([...codeRef.current.map(el => el.value.toUpperCase())]);
 						}}
 						onKeyDown={e => {
 							if (backKeys.includes(e.key)) {
@@ -56,7 +69,7 @@ export default function VerificationInput({
 								}
 							} else if (
 								forwardKeys.includes(e.key) ||
-								e.key.match(/[0-9a-zA-Z]/)
+								e.key.match(/^[0-9a-z]+$/)
 							) {
 								if (i < codeLength - 1) {
 									setTimeout(() => {
@@ -74,7 +87,7 @@ export default function VerificationInput({
 						timer > 0 ? '' : enabledClasses
 					}`}
 					disabled={timer > 0}
-					onClick={() => setTimer(15)}
+					onClick={sendEmail}
 				>
 					{timer > 0 ? (
 						<>
