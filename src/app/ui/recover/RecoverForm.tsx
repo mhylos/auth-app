@@ -109,10 +109,16 @@ export default function RecoverForm({
 					className={`relative overflow-hidden transition-all duration-500 w-full aspect-[12/2] ease-in-out p-2.5 text-white bg-primary-600 enabled:hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm text-center dark:bg-primary-600 enabled:dark:hover:bg-primary-700 dark:focus:ring-primary-800 
                 btn disabled:opacity-50 disabled:cursor-not-allowed`}
 					disabled={
-						verificationCode.includes('') || verificationCode.length < 6
+						verificationCode.includes('') ||
+						verificationCode.length < 6 ||
+						verifyResponse.isLoading
 					}
 				>
-					Continuar
+					{verifyResponse.isLoading ? (
+						<PulseLoader className='pulseLoader' />
+					) : (
+						'Continuar'
+					)}
 				</button>
 			)}
 		</form>

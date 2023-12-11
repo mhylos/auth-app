@@ -1,7 +1,16 @@
-import { useState } from 'react';
+'use client';
 
-export default function ChangePassword() {
+import useLazyAxios from '@/hooks/useLazyAxios';
+import { MessageResponseType } from '@/utils/types';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import PulseLoader from 'react-spinners/PulseLoader';
+
+export default function ChangePassword({ email }: { email: string }) {
 	const [error, setError] = useState('');
+	const [changePw, { isLoading, isSuccess }] =
+		useLazyAxios<MessageResponseType>();
+	const router = useRouter();
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -15,7 +24,25 @@ export default function ChangePassword() {
 		}
 
 		setError('');
+
+		changePw({
+			url: '/recover/change-password',
+			method: 'post',
+			data: {
+				email,
+				password,
+			},
+		});
 	};
+
+	useEffect(() => {
+		if (isSuccess) {
+			setError('Contraseña cambiada con éxito');
+			setTimeout(() => {
+				router.push('/login');
+			}, 2500);
+		}
+	}, [isSuccess]);
 
 	return (
 		<form
@@ -53,11 +80,23 @@ export default function ChangePassword() {
 				/>
 			</div>
 
-			<span className='text-sm font-medium text-red-500'> {error}</span>
+			<span
+				className={`text-sm font-medium ${
+					isSuccess ? 'text-primary-500' : 'text-red-500'
+				}`}
+			>
+				{' '}
+				{error}
+			</span>
 			<button
 				className={`relative overflow-hidden transition-all duration-500 w-full aspect-[12/2] ease-in-out p-2.5 text-white bg-primary-600 enabled:hover:bg-primary-700 focus:outline-none font-medium rounded-lg text-sm text-center btn disabled:opacity-50 disabled:cursor-not-allowed`}
+				disabled={isLoading || isSuccess}
 			>
-				Cambiar contraseña
+				{isLoading ? (
+					<PulseLoader className='pulseLoader' />
+				) : (
+					'Cambiar contraseña'
+				)}
 			</button>
 		</form>
 	);

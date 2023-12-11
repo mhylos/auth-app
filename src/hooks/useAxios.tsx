@@ -24,7 +24,6 @@ export default function useAxios<R>(request: IUseAxios): responseType<R> {
 		}
 		axiosRequest<R>(request)
 			.then(({ data }) => {
-				console.log(data);
 				return setResponse(prev => {
 					return {
 						...prev,

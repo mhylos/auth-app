@@ -34,8 +34,8 @@ export default function Page() {
 	};
 
 	useEffect(() => {
-		if (response.data && 'name' in response.data) {
-			localStorage.setItem('name', response.data.name);
+		if (response.data) {
+			localStorage.setItem('token', response.data.token);
 		}
 	}, [response]);
 
@@ -113,7 +113,7 @@ export default function Page() {
 							/>
 							<div className='w-full flex items-center justify-between'>
 								<div className='flex items-start'>
-									<div className='flex items-center h-5'>
+									{/* <div className='flex items-center h-5'>
 										<input
 											id='remember'
 											aria-describedby='remember'
@@ -129,7 +129,7 @@ export default function Page() {
 										>
 											Recordar contraseña
 										</label>
-									</div>
+									</div> */}
 								</div>
 								<Link
 									href='/recover'

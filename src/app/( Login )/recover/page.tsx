@@ -1,8 +1,8 @@
 'use client';
 
 import { PageWrapper } from '@/app/ui/components';
-import ChangePassword from '@/app/ui/register/ChangePassword';
-import RecoverForm from '@/app/ui/register/RecoverForm';
+import ChangePassword from '@/app/ui/recover/ChangePassword';
+import RecoverForm from '@/app/ui/recover/RecoverForm';
 import { useState } from 'react';
 
 export default function Page() {
@@ -24,7 +24,7 @@ export default function Page() {
 						/>
 					) : (
 						<PageWrapper className=''>
-							<ChangePassword />
+							<ChangePassword email={email} />
 						</PageWrapper>
 					)}
 				</div>

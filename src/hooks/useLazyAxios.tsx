@@ -5,7 +5,7 @@ import { IUseAxios, responseType } from '@/utils/types';
 import { useState } from 'react';
 
 export default function useLazyAxios<R>(): [
-	(request: IUseAxios) => Promise<boolean>,
+	(request: IUseAxios) => void,
 	Omit<responseType<R>, 'reFetch'>,
 	() => void,
 ] {
@@ -17,7 +17,7 @@ export default function useLazyAxios<R>(): [
 		isSuccess: false,
 	});
 
-	const request = async (request: IUseAxios) => {
+	const request = (request: IUseAxios) => {
 		if (!response.isLoading) {
 			setResponse(prev => {
 				return {
@@ -40,6 +40,7 @@ export default function useLazyAxios<R>(): [
 				});
 			})
 			.catch(error => {
+				console.log(error);
 				return setResponse(prev => {
 					return {
 						...prev,
@@ -50,7 +51,6 @@ export default function useLazyAxios<R>(): [
 					};
 				});
 			});
-		return true;
 	};
 
 	const reset = () => {
