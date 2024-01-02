@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-icons/all-files": "^4.1.0",
     "axios": "^1.6.2",
     "framer-motion": "^10.16.5",
     "next": "14.0.3",
@@ -16,8 +17,10 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "^18",
     "react-icons": "^4.12.0",
+    "react-select": "^5.8.0",
     "react-spinners": "^0.13.8",
-    "sass": "^1.69.5"
+    "sass": "^1.69.5",
+    "use-debounce": "^10.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",

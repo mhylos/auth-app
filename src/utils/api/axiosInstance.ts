@@ -11,19 +11,19 @@ const axiosInstance = axios.create({
 		'Authorization': `Bearer undefined`
 	},
 	timeout: 10000,
-	
+
 	// withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(
-  config => {
-    const token = window.localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  error => Promise.reject(error),
+	config => {
+		const token = window.localStorage.getItem('token');
+		if (token) {
+			config.headers.Authorization = `Bearer ${token}`;
+		}
+		return config;
+	},
+	error => Promise.reject(error),
 );
 
 export default axiosInstance;
