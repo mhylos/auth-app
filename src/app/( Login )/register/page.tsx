@@ -10,7 +10,7 @@ import { IoCheckmark, IoCloseOutline } from 'react-icons/io5';
 import { PulseLoader } from 'react-spinners';
 
 import { CustomInput, PageWrapper } from '@/app/ui/components';
-import { MessageResponseType, UserType } from '@/utils/types';
+import { MessageResponseType, UserType } from '@/utils/types/types';
 import { useLazyAxios } from '@/hooks';
 
 export default function Page() {

@@ -1,4 +1,3 @@
-import Header from './ui/components/Header';
 import { archivo } from './ui/fonts';
 import './ui/global.scss';
 

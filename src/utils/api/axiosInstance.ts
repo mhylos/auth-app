@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer undefined`
 	},
-	timeout: 10000,
+	// timeout: 10000,
 
 	// withCredentials: true,
 });

@@ -160,3 +160,24 @@ export interface TravelerPricingPrice {
 export type TravelerType = "ADULT";
 
 export type FlightOfferType = "flight-offer";
+
+export interface City {
+	iataCode: string;
+	address: Address;
+}
+
+export interface Address {
+	cityName: string;
+	countryName: string;
+	stateCode?: string;
+}
+
+export interface BillingInfo {
+	name: string,
+	email: string,
+	phone: string,
+	address: string,
+	city: string,
+	zip: string,
+	country: string,
+}

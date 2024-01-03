@@ -1,11 +1,13 @@
+import { AxiosResponse } from 'axios';
+
 import { axiosRequest } from '@/utils/services';
 
-import { IUseAxios, responseType } from '@/utils/types';
+import { IUseAxios, responseType } from '@/utils/types/types';
 
 import { useState } from 'react';
 
 export default function useLazyAxios<R>(): [
-	(request: IUseAxios) => void,
+	(request: IUseAxios) => Promise<AxiosResponse<R, any>>,
 	Omit<responseType<R>, 'reFetch'>,
 	() => void,
 ] {
@@ -26,31 +28,27 @@ export default function useLazyAxios<R>(): [
 				};
 			});
 		}
-		axiosRequest<R>(request)
-			.then(({ data }) => {
-				return setResponse(prev => {
-					return {
-						...prev,
-						data,
-						errorMessage: '',
-						hasError: false,
-						isLoading: false,
-						isSuccess: true,
-					};
-				});
-			})
-			.catch(error => {
-				console.log(error);
-				return setResponse(prev => {
-					return {
-						...prev,
-						data: undefined,
-						errorMessage: error?.message ?? error?.response?.data?.message,
-						hasError: true,
-						isLoading: false,
-					};
-				});
+		const r = axiosRequest<R>(request);
+		r.then(({ data }) => {
+			return setResponse({
+				data,
+				errorMessage: '',
+				hasError: false,
+				isLoading: false,
+				isSuccess: true,
 			});
+		}).catch(error => {
+			console.log(error);
+			return setResponse({
+				data: undefined,
+				errorMessage: error?.message ?? error?.response?.data?.message,
+				hasError: true,
+				isLoading: false,
+				isSuccess: false,
+			});
+		});
+
+		return r;
 	};
 
 	const reset = () => {

@@ -1,7 +1,7 @@
 import { useState, useEffect, useReducer } from 'react';
 
 import { axiosRequest } from '@/utils/services';
-import { IUseAxios, responseType } from '@/utils/types';
+import { IUseAxios, responseType } from '@/utils/types/types';
 
 export default function useAxios<R>(request: IUseAxios): responseType<R> {
 	const [response, setResponse] = useState<responseType<R>>({

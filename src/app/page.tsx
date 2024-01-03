@@ -1,7 +1,7 @@
 'use client';
 
 import { useAxios } from '@/hooks';
-import { UserType } from '@/utils/types';
+import { UserType } from '@/utils/types/types';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';

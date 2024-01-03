@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import CustomInput from '../components/CustomInput';
 import VerificationInput from './VerificationInput';
 import { useLazyAxios } from '@/hooks';
-import { MessageResponseType } from '@/utils/types';
+import { MessageResponseType } from '@/utils/types/types';
 import { browserName, osVersion, osName } from 'react-device-detect';
 import PulseLoader from 'react-spinners/PulseLoader';
 

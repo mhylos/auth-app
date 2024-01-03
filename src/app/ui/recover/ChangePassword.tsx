@@ -1,7 +1,7 @@
 'use client';
 
 import useLazyAxios from '@/hooks/useLazyAxios';
-import { MessageResponseType } from '@/utils/types';
+import { MessageResponseType } from '@/utils/types/types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import PulseLoader from 'react-spinners/PulseLoader';
@@ -81,9 +81,8 @@ export default function ChangePassword({ email }: { email: string }) {
 			</div>
 
 			<span
-				className={`text-sm font-medium ${
-					isSuccess ? 'text-primary-500' : 'text-red-500'
-				}`}
+				className={`text-sm font-medium ${isSuccess ? 'text-primary-500' : 'text-red-500'
+					}`}
 			>
 				{' '}
 				{error}

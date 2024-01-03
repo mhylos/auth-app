@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { IoCheckmark, IoCloseOutline } from 'react-icons/io5';
 
-import { UserType } from '@/utils/types';
+import { UserType } from '@/utils/types/types';
 import { PageWrapper, CustomInput } from '@/app/ui/components';
 import { useLazyAxios } from '@/hooks';
 
