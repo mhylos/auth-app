@@ -1,14 +1,12 @@
-
-
 import axios from 'axios';
 
 const axiosInstance = axios.create({
 	// baseURL: 'http://10.242.251.119:3001/api',
 	// baseURL: 'https://auth-app-backend-git-main-mhylos.vercel.app/api',
-	baseURL: process.env.API_MIDDLEWARE_URL,
+	baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 	headers: {
 		'Content-Type': 'application/json',
-		'Authorization': `Bearer undefined`
+		Authorization: `Bearer undefined`,
 	},
 	// timeout: 10000,
 

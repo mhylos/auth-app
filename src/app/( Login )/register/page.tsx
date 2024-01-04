@@ -59,7 +59,7 @@ export default function Page() {
 			if (busImage === 'bus_waiting') {
 				setBusImage('bus_going');
 				setTimeout(() => {
-					router.push('/');
+					router.push('/trips');
 				}, 2000);
 				return;
 			}

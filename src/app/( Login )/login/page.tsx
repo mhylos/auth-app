@@ -81,7 +81,7 @@ export default function Page() {
 					onTransitionEnd={e => {
 						if (response.data) {
 							e.currentTarget.style.display = 'none';
-							router.push('/');
+							router.push('/trips');
 						}
 					}}
 				/>

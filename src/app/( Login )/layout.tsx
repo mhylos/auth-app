@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		if (isSuccess) {
-			redirect('/');
+			redirect('/trips');
 		}
 	}, [isSuccess]);
 

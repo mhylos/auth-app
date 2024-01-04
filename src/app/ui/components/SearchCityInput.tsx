@@ -58,7 +58,7 @@ export default function SearchCityInput({ label, id }: SearchInputProps) {
                     onBlur={() => {
                         setTimeout(() => {
                             setResults([]);
-                        }, 100);
+                        }, 250);
                     }}
                     onFocus={(e) => {
                         if (inputValue.length > 2) {

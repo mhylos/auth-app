@@ -20,11 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             router.push('/login');
             return
         }
-        if (!isLoading && !hasError && data) {
-            localStorage.setItem('name', data.name);
-            router.push('/home');
-        }
-    }, [hasError, isLoading]);
+    }, [hasError]);
 
     if (isLoading || hasError) {
         return (
