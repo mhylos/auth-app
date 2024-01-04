@@ -29,7 +29,7 @@ export default function Page() {
 		}
 	}, [hasError, isLoading]);
 
-	if (isLoading) {
+	if (isLoading || hasError) {
 		return (
 			<main className='grid w-screen h-screen place-items-center bg-white'>
 				<Image
